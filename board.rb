@@ -35,42 +35,46 @@ class Board
                 @board_size = 50
         end
 
-        game_board = Array.new(@board_size) { Array.new(@board_size) { Random.rand(2) == 1 ? 0 : 1}}
+        game_board_reference = Array.new(@board_size) { Array.new(@board_size) { Random.rand(2) == 1 ? 0 : 1}}
 
-        # game_board.each do |col|
-        #     col.each do |row|
-        #     end
-        #     if Random.rand(2) == 1
-        #         # puts "no mine"
-        #         game_board[][] = 0
-        #     else
-        #         row = 1
-        #     end
-        # end
-        # puts game_board.inspect
-        # puts game_board[0][1]
-        print_game_state(game_board, @board_size)
+        print_game_state(game_board_reference, @board_size, nil, nil)
 
     end
 
-    def print_game_state(game_board, board_size)
+    def print_game_state(game_board, board_size, x_choice, y_choice)
 
-        # game_board = [
-        #     [1, 1, 1, 0, 0],
-        #     [1, 0, 1, 1, 0],
-        #     [0, 1, 1, 1, 1],
-        #     [1, 1, 1, 1, 1],
-        #     [0, 1, 0, 0, 1]
-        # ]
-        game_board.each_with_index do |col, index|
+        game_board.each_with_index do |col, col_index|
             
-            printf("%s | ", index)
-            col.each_with_index do |row, index|
-                if row[board_size]
-                    printf("%s", row)
-                else
-                    printf("%s ", row)
+            # The following loop will output the X axis labels
+            if col_index == 0
+                0.upto(col.length - 1) do |i|
+                    if i == 0
+                        printf("    %s", i)
+                    elsif i == (board_size - 1)
+                        printf("%s \n    ---------- \n", i)
+                        
+                    else
+                        printf("%s", i)
+                    end
                 end
+            end
+
+            printf("%s | ", col_index) # Y axis labels
+            col.each_with_index do |row, row_index|
+                if row == 0 || row == 1
+                    if row[board_size]
+                        printf(" ", row)
+                    else
+                        printf("  ", row)
+                    end
+                else
+                    if row[board_size]
+                        printf("%s", row)
+                    else
+                        printf("%s ", row)
+                    end
+                end
+
             end
             print(" |\n")
         end
